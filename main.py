@@ -24,48 +24,74 @@ class User:
 
     def read_raw_data(self, raw_data):
         self.name = raw_data["Name"]
-        self.acess = raw_data["Acess"]
+        self.access = raw_data["Acess"]
+        self.image = raw_data.get("image", None)
+        self.image_access = raw_data.get("image_access", [])
 
     def __str__(self):
         return f"User -> {self.name}"
 
-    # def update_user()
+    def update_user(self):
+        data[self.raw_data["ID"]] = self.raw_data
+        update_data()
+
+    def addRole(self, role):
+        if role not in self.access:
+            self.access.append(role)
+            self.raw_data["Acess"] = self.access
+            self.update_user()
+        else:
+            print(f"{self.name} already has the role {role}")
+
+    def addAccessOnResourceToRole(self, access, resource, role):
+        if role in self.access:
+            resource_access = self.raw_data.get(f"{resource}_access", [])
+            if access not in resource_access:
+                resource_access.append(access)
+                self.raw_data[f"{resource}_access"] = resource_access
+                self.update_user()
+            else:
+                print(f"{access} access already exists for {resource} resource and {role} role")
+        else:
+            print(f"{self.name} doesn't have the {role} role")
+
 
 options = [
-"addAccess READ",
-"addAccess WRITE",
-"addResource IMAGE",
-"addAccessOnResource READ IMAGE",
-"addActionOnResource WRITE IMAGE",
-# addRole ADMIN
-# addAccessOnResourceToRole READ IMAGE ADMIN
-# addUser ADMINUSER
+    "addAccess READ",
+    "addAccess WRITE",
+    "addResource IMAGE",
+    "addAccessOnResource READ IMAGE",
+    "addActionOnResource WRITE IMAGE",
+    "quit",
 ]
 options = {i:o for i,o in enumerate(options)}
+
+def addUser(name):
+    user_id = len(data)
+    user_data = {"ID": user_id, "Name": name, "Acess": []}
+    data.append(user_data)
+    update_data()
+    return user_id
+
 
 
 def choose_action(action: str, user, user_id):
     user_data = data[user_id]
-    # 1st 3 done
+
     if action.startswith("addAccess "):
         role = action.split()[-1]
-        if role not in user.acess:
-            # user.acess.append(role)
+        if role not in user.access:
             user_data["Acess"].append(role)
-            
-
         else: 
-            print(f"already a {role}")
+            print(f"{user.name} already has the {role} role")
         
     elif action.startswith("addResource IMAGE"):
-        # user.image = action.split()[-1]
         user_data["image"] = action.split()[-1]
     
     elif action.startswith("addAccessOnResource"):
-        user_data["image_acess"].append(action.split()[-2])
+        resource = action.split()[-1]
+        access = action
 
-
-    change_user_data(user_data, user_id)
 
 
 if __name__ =="__main__":
