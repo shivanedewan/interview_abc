@@ -1,0 +1,22 @@
+{
+  "1": {
+    "Name": "A",
+    "Acess": [
+      "ADMIN"
+    ],
+    "Image": "img1.png",
+    "image_acess": []
+  },
+  "2": {
+    "Name": "B",
+    "Acess": []
+    ,
+    "Image": "img2.png",
+    "image_acess": []
+  },
+  "3": {
+    "Name": "C",
+    "Acess": [],
+    "image_acess": []
+  }
+}
